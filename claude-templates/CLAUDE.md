@@ -14,7 +14,7 @@ pytest  # Real tests only - NO MOCKS
 
 ## Development Workflow
 1. **Check context:** Review .context/plan.md for current tasks
-2. **Understand deeply:** Check .context/ideas.md for design decisions  
+2. **Understand deeply:** Check .context/ideas.md for design decisions
 3. **Research if needed:** Update .context/research.md with findings
 4. **Branch:** `git checkout -b feature/short-description`
 5. **Code:** Follow patterns (see .rules/python.md for standards)
@@ -22,6 +22,7 @@ pytest  # Real tests only - NO MOCKS
 7. **Document failures:** Log in .context/scratch_history.md immediately
 8. **Commit:** Atomic, <50 chars, no emojis
 9. **PR:** Reference context and issue
+10. **Code review:** Run pr-review-toolkit after creating PR (see .rules/code_review.md)
 
 ## [CRITICAL] Core Principles - Never Compromise
 
@@ -55,12 +56,16 @@ pytest  # Real tests only - NO MOCKS
 - `.rules/testing.md` - Complete NO MOCK policy
 - `.rules/self_improve.md` - Learning from projects
 - `.rules/documentation.md` - MkDocs setup
+- `.rules/code_review.md` - PR review toolkit and checklist
 
 ### Language & Tools
 - `.rules/python.md` - Style, linting, type hints
 - `.rules/javascript.md` - ES6+, TypeScript
 - `.rules/ci_cd.md` - GitHub Actions setup
 - `.rules/{{framework}}.md` - Framework patterns
+
+### MCP Tools (When Available)
+- `.rules/serena_mcp.md` - Code intelligence with Serena MCP
 
 ## Context Files
 - `.context/plan.md` - Current tasks and phases
