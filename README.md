@@ -11,12 +11,16 @@ cp -r cursor-templates/core_rules your-project/
 cp -r shared/.context-template your-project/.context
 ```
 
+Then, tell the agent to edit the context and rule documents to match your project. It is always better to have your main idea as a paragraph or a separate document first and then initialize the project based on that.
+
 ### For Claude Users  
 ```bash
 cp claude-templates/CLAUDE.md your-project/
 cp -r claude-templates/.rules your-project/
 cp -r shared/.context-template your-project/.context
 ```
+
+**For Claude Code:** Copy the `commands/init-project.md` to `~/.claude/commands/`. Then you will be able to do `/init-project` in a Claude Code session with your project idea. It again works best on an empty project. But, even if the project is fully operational, Claude will search through the directory and populate the documents based on the project design.
 
 ## 📁 New Dual-Template Structure
 
