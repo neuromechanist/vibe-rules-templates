@@ -1,0 +1,7 @@
+{
+  "name": "workflow",
+  "description": "Epic/sprint development workflow automation with git worktrees, GitHub issues, and phased feature delivery",
+  "author": {
+    "name": "Yahya"
+  }
+}
