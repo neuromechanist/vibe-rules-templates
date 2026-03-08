@@ -12,36 +12,39 @@ When the `pr-review-toolkit` plugin is available, use it after creating PRs to c
 - `type-design-analyzer` - Analyze type design and invariants
 
 ### Workflow
+**No technical debt carried forward.** Address all findings, not just critical ones.
 1. Create PR with `gh pr create`
-2. Run code review agent on the changes
-3. Address critical findings before requesting human review
-4. Document any intentionally skipped suggestions
+2. Run code review agents on the changes (all agents in parallel)
+3. Address ALL findings: critical, important, suggestions, and nice-to-haves
+4. Only skip genuine false positives or intentionally different design choices
+5. Document skipped findings with clear reasoning (false positive / intended behavior)
 
 ## Manual Code Review Checklist
 
 ### Before Committing
-- [ ] Code compiles without warnings
-- [ ] Tests pass
+- [ ] Code compiles/runs without warnings
+- [ ] Tests pass (real tests, no mocks)
 - [ ] No debug code left (print statements, TODO hacks)
 - [ ] No sensitive data in code or logs
 
 ### Logic & Safety
-- [ ] Error cases handled appropriately
-- [ ] No silent failures (empty catch blocks)
-- [ ] Thread safety for shared state
-- [ ] Resource cleanup (files, connections, memory)
+- [ ] Error cases handled with specific exceptions
+- [ ] No silent failures (empty catch blocks, bare except)
+- [ ] Resource cleanup (files, connections, context managers)
+- [ ] Input validation at system boundaries
 
 ### Code Quality
 - [ ] Functions do one thing
 - [ ] Clear naming (no abbreviations)
 - [ ] No magic numbers (use constants)
-- [ ] Comments explain "why", not "what"
+- [ ] No premature abstraction (three uses before extracting)
 
-### Swift Specific
-- [ ] Use `#if DEBUG` for debug-only code
-- [ ] Prefer `let` over `var`
-- [ ] Use `guard` for early returns
-- [ ] Handle optionals safely (no force unwrap in production)
+### Never Do This
+- [ ] No `except Exception: pass` or empty catch blocks
+- [ ] No `# type: ignore` without explanation
+- [ ] No commented-out code (delete it; git has history)
+- [ ] No `TODO` without a linked issue
+- [ ] No backward-compatibility shims; replace, don't deprecate
 
 ## Review Comments
 When leaving review comments:
@@ -51,4 +54,4 @@ When leaving review comments:
 - Reference documentation or examples
 
 ---
-*Review early, review often, catch issues before they ship.*
+*No technical debt carried forward. Review early, review often.*

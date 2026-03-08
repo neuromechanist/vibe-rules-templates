@@ -4,6 +4,7 @@
 - **Format:** `<type>: <description>`
 - **Length:** <50 characters
 - **No emojis** in commits or PR titles
+- **No AI attribution** (no "Co-Authored-By: Claude" or similar)
 - **Types:**
   - `feat:` New feature
   - `fix:` Bug fix
@@ -13,8 +14,9 @@
   - `chore:` Maintenance tasks
 
 ## Branch Strategy
-- **Feature branches:** `feature/short-description`
-- **Bugfix branches:** `fix/issue-description`
+- **Feature branches:** `feature/issue-N-short-description`
+- **Bugfix branches:** `fix/issue-N-description`
+- **Use `gh issue develop`** to create branches from issues
 - **No spaces** in branch names, use hyphens
 - **Delete after merge**
 
@@ -25,19 +27,26 @@
 
 ## Pull Request Process
 1. Create issue first (for significant changes)
-2. Branch from main
+2. Use `gh issue develop` to create branch
 3. Make atomic commits
 4. Push branch
-5. Create PR with:
-   - Clear title (no issue numbers)
+5. Create PR with `gh pr create`:
+   - Clear title (<70 chars, no emojis)
    - Description with "Fixes #123"
-   - Test results
-   - Screenshots if UI changes
+   - Test results summary
+6. Run `/review-pr` and address ALL findings
+7. Squash merge to keep history clean
+
+## Merge Strategy
+- **Squash merge** for feature branches (clean history)
+- **Rebase** to update feature branches from base (`git rebase origin/main`)
+- **Never force-push** to shared branches (main, develop)
+- **Delete branch** after merge
 
 ## Git Commands
 ```bash
-# Start feature
-git checkout -b feature/new-thing
+# Start feature from issue
+gh issue develop 123
 
 # Atomic commits
 git add -p  # Stage selectively
@@ -48,18 +57,18 @@ git fetch origin
 git rebase origin/main
 
 # Push and create PR
-git push -u origin feature/new-thing
+git push -u origin feature/issue-123-auth
 gh pr create
 ```
 
 ## .gitignore Essentials
 ```
-.context/        # Local workflow docs
 __pycache__/     # Python
 node_modules/    # JavaScript
-.env            # Secrets
-*.log           # Logs
+.env             # Secrets
+*.log            # Logs
+.venv/           # Virtual environments
 ```
 
 ---
-*Atomic commits, clear messages, clean history.*
+*Atomic commits, clear messages, clean history. No emojis, no AI attribution.*

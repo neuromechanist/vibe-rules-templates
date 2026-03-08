@@ -2,27 +2,41 @@
 
 ## Project Context
 **Purpose:** [Brief description of what you're building]
-**Tech Stack:** Python 3.11+, [frameworks]
+**Tech Stack:** [Languages, frameworks, key dependencies]
 **Architecture:** [Key design decisions]
+
+## Architecture Map
+```
+src/
+├── core/          # [Purpose]
+├── api/           # [Purpose]
+├── models/        # [Purpose]
+├── utils/         # [Purpose]
+└── tests/         # Real tests only
+```
 
 ## Environment Setup
 ```bash
-conda activate {{ENV_NAME}}  # or source .venv/bin/activate
-pip install -e .
-pytest  # Real tests only - NO MOCKS
+# Python projects
+uv sync          # Install dependencies
+uv run pytest    # Run tests
+
+# JS/TS projects
+bun install      # Install dependencies
+bun test         # Run tests
 ```
 
 ## Development Workflow
 1. **Check context:** Review .context/plan.md for current tasks
 2. **Understand deeply:** Check .context/ideas.md for design decisions
 3. **Research if needed:** Update .context/research.md with findings
-4. **Branch:** `git checkout -b feature/short-description`
-5. **Code:** Follow patterns (see .rules/python.md for standards)
-6. **Test:** Real data only (see .rules/testing.md for details)
+4. **Branch:** `gh issue develop <issue-number>`
+5. **Code:** Follow patterns (see .rules/ for standards)
+6. **Test:** Real data only (see .rules/testing.md)
 7. **Document failures:** Log in .context/scratch_history.md immediately
 8. **Commit:** Atomic, <50 chars, no emojis
 9. **PR:** Reference context and issue
-10. **Code review:** Run pr-review-toolkit after creating PR (see .rules/code_review.md)
+10. **Code review:** Run `/review-pr` after creating PR (see .rules/code_review.md)
 
 ## [CRITICAL] Core Principles - Never Compromise
 
@@ -34,20 +48,35 @@ pytest  # Real tests only - NO MOCKS
 
 ### Commits & Git
 - Atomic commits, focused changes
-- Messages <50 chars, no emojis
+- Messages <50 chars, no emojis, no AI attribution
 - Feature branches for multi-step work
 **Details:** .rules/git.md
+
+### No Technical Debt Carried Forward
+- Address ALL PR review findings
+- Only skip genuine false positives or intended design choices
+- Replace, don't deprecate
+**Details:** .rules/code_review.md
 
 ### Documentation
 - Examples > explanations
 - README gets someone running in <5 minutes
 **Details:** .rules/documentation.md
 
+## [NEVER DO THIS]
+- Never use mocks, stubs, or fake data in tests
+- Never use `pip`, `conda`, or `virtualenv`; use UV for Python
+- Never use `npm` or `npx`; use Bun for JS/TS
+- Never commit secrets, .env files, or credentials
+- Never leave empty catch blocks or silent failures
+- Never add backward-compatibility shims; replace directly
+- Never add TODO without a linked issue
+
 ## Think Like a Senior Developer
 - Keep the big picture in mind
 - Ask: "Will this prevent a 3am wake-up call?"
-- Document learnings → .context/scratch_history.md
-- Extract patterns (3+ uses) → Create rules
+- Document learnings in .context/scratch_history.md
+- Extract patterns (3+ uses) into rules
 **See:** .rules/self_improve.md for learning process
 
 ## [REFERENCE] Rules Directory
@@ -59,8 +88,7 @@ pytest  # Real tests only - NO MOCKS
 - `.rules/code_review.md` - PR review toolkit and checklist
 
 ### Language & Tools
-- `.rules/python.md` - Style, linting, type hints
-- `.rules/javascript.md` - ES6+, TypeScript
+- `.rules/python.md` - UV, ruff, ty
 - `.rules/ci_cd.md` - GitHub Actions setup
 - `.rules/{{framework}}.md` - Framework patterns
 
@@ -75,14 +103,16 @@ pytest  # Real tests only - NO MOCKS
 
 ## Quick Commands
 ```bash
-# Run tests (real data only)
-pytest tests/ --cov
+# Python
+uv run pytest tests/ --cov       # Run tests
+uv run ruff check --fix . && uv run ruff format .  # Lint + format
 
-# Format code
-ruff check --fix . && ruff format .
+# JS/TS
+bun test                         # Run tests
+bun run biome check --fix .      # Lint + format
 
-# Build docs
-mkdocs serve
+# Docs
+uv run mkdocs serve              # Build docs
 ```
 
 ## Project-Specific Guidelines

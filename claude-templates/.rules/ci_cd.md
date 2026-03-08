@@ -8,22 +8,23 @@
 ## Essential Workflows
 
 ### 1. Testing (`test.yml`)
-**Triggers:** `on: [push, pull_request]` to main branches  
+**Triggers:** `on: [push, pull_request]` to main branches
 **Jobs (in order):**
-- **Lint:** `ruff check` / `eslint` (fails fast)
+- **Lint:** `ruff check` / `biome check` (fails fast)
+- **Type Check:** `ty` / `tsc --noEmit`
 - **Test:** Real tests only, matrix for versions
 - **Build:** Verify compilation if applicable
 - **Coverage:** Optional reporting to Codecov
 
 ### 2. Documentation (`docs.yml`)
-**Triggers:** `on: push: branches: [main]`  
-**Jobs:** Build with MkDocs → Deploy to GitHub Pages
+**Triggers:** `on: push: branches: [main]`
+**Jobs:** Build with MkDocs -> Deploy to GitHub Pages
 
 ### 3. Release (`release.yml`)
-**Triggers:** Tag creation or manual  
-**Jobs:** Build → Create release → Publish packages
+**Triggers:** Tag creation or manual
+**Jobs:** Build -> Create release -> Publish packages
 
-## Minimal Python Example
+## Python Example (UV)
 ```yaml
 name: CI
 on: [push, pull_request]
@@ -33,29 +34,54 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
-      with: { python-version: '3.11', cache: 'pip' }
-    - run: pip install ruff && ruff check .
+    - uses: astral-sh/setup-uv@v4
+    - run: uv sync --dev
+    - run: uv run ruff check .
+    - run: uv run ruff format --check .
 
   test:
     needs: lint
     runs-on: ubuntu-latest
     strategy:
-      matrix: { python-version: ['3.10', '3.11', '3.12'] }
+      matrix: { python-version: ['3.11', '3.12', '3.13'] }
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
-      with: { python-version: '${{ matrix.python-version }}', cache: 'pip' }
-    - run: pip install .[test]
-    - run: pytest --cov=src
+    - uses: astral-sh/setup-uv@v4
+      with: { python-version: '${{ matrix.python-version }}' }
+    - run: uv sync --dev
+    - run: uv run pytest --cov=src
+```
+
+## JavaScript/TypeScript Example (Bun)
+```yaml
+name: CI
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: oven-sh/setup-bun@v2
+    - run: bun install
+    - run: bun run biome check .
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: oven-sh/setup-bun@v2
+    - run: bun install
+    - run: bun test
 ```
 
 ## Key Practices (Think About Pipeline Flow)
 - **Pin versions:** `actions/checkout@v4` (reproducibility)
-- **Cache deps:** Speed matters for developer happiness
-- **Fail fast:** Lint→Test→Build→Deploy (catch cheap failures first)
+- **Cache deps:** UV and Bun both have built-in caching; use `setup-uv` and `setup-bun` actions
+- **Fail fast:** Lint -> Type Check -> Test -> Build -> Deploy (catch cheap failures first)
 - **Matrix testing:** Test all supported versions
-- **Secrets:** Never commit credentials
+- **Secrets:** Never commit credentials; use GitHub Secrets
 - **Conditional:** Deploy only from protected branches
 
 ## Pipeline Philosophy

@@ -6,8 +6,13 @@
 **Goal:** New developers productive in <1 hour.
 
 ## Setup
-**Install:** `pip install mkdocs mkdocs-material mkdocstrings[python]`  
-**Config:** `mkdocs.yml` in project root
+```bash
+# Python projects (UV)
+uv add --dev mkdocs mkdocs-material "mkdocstrings[python]"
+
+# JS/TS projects
+bun add -D typedoc
+```
 
 ## Minimal mkdocs.yml
 ```yaml
@@ -18,7 +23,7 @@ repo_url: https://github.com/user/repo
 theme:
   name: material
   features: [navigation.tabs, search.suggest]
-  
+
 nav:
   - Home: index.md
   - API: api/
@@ -61,9 +66,15 @@ docs/
 ```
 
 ## Commands
-- **Develop:** `mkdocs serve` (live preview at localhost:8000)
-- **Build:** `mkdocs build` (generates site/)
-- **Deploy:** `mkdocs gh-deploy` (to GitHub Pages)
+```bash
+# Python (MkDocs)
+uv run mkdocs serve    # Live preview at localhost:8000
+uv run mkdocs build    # Generate site/
+uv run mkdocs gh-deploy # Deploy to GitHub Pages
+
+# JS/TS (TypeDoc)
+bun run typedoc
+```
 
 ## Writing Tips (Think Like a Teacher)
 - **Start with why:** Context before details

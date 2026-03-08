@@ -2,18 +2,38 @@
 
 ## Version & Environment
 - **Python 3.11+** minimum (use latest stable)
-- **Virtual Environment:** `venv` or `conda`
-- **Package Management:** `pip` with `pyproject.toml`
+- **Package Manager:** UV only (not pip, conda, or virtualenv)
+- **Virtual Environment:** Managed by UV (`uv venv`, `uv sync`)
+- **Project Config:** `pyproject.toml` (no requirements.txt)
+
+## Quick Reference
+```bash
+# Create project
+uv init my-project && cd my-project
+
+# Add dependencies
+uv add requests pandas
+
+# Add dev dependencies
+uv add --dev pytest ruff
+
+# Run commands in venv
+uv run pytest
+uv run python main.py
+
+# Sync environment
+uv sync
+```
 
 ## Code Style
 - **Formatter:** `ruff format` (Black-compatible)
-- **Linter:** `ruff check` with aggressive fixes
+- **Linter:** `ruff check --fix --unsafe-fixes`
+- **Type Checker:** `ty` (not mypy)
 - **Line Length:** 88 characters (Black standard)
-- **Imports:** Sorted with `isort` (via ruff)
+- **Imports:** Sorted by ruff (isort-compatible)
 
 ## Type Hints
 - **Required for:** All public functions and methods
-- **Tool:** `mypy` for type checking
 - **Example:**
 ```python
 def process_data(items: list[dict[str, Any]]) -> pd.DataFrame:
@@ -28,7 +48,7 @@ project/
 │   ├── __init__.py
 │   └── module.py
 ├── tests/            # Real tests only
-├── pyproject.toml    # Project config
+├── pyproject.toml    # Project config (UV + ruff + ty)
 └── .gitignore
 ```
 
@@ -38,8 +58,8 @@ project/
 # .git/hooks/pre-commit
 files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$')
 if [ -n "$files" ]; then
-    ruff check --fix --unsafe-fixes $files
-    ruff format $files
+    uv run ruff check --fix --unsafe-fixes $files
+    uv run ruff format $files
     git add $files
 fi
 ```
@@ -58,7 +78,19 @@ try:
 except SpecificError as e:
     logger.error(f"Operation failed: {e}")
     raise  # Re-raise or handle appropriately
+
+# Never do this:
+# except Exception:
+#     pass  # Silent failure
 ```
+
+## Never Do This
+- Never use `pip install` directly; use `uv add` or `uv pip install`
+- Never use `conda`, `virtualenv`, or `venv`; UV handles environments
+- Never use `mypy`; use `ty` for type checking
+- Never use bare `except:` or `except Exception: pass`
+- Never use `os.path`; use `pathlib.Path`
+- Never commit `.env` files or hardcoded secrets
 
 ## Documentation
 - **Docstrings:** Google or NumPy style
@@ -66,4 +98,4 @@ except SpecificError as e:
 - **Type hints:** Self-documenting code
 
 ---
-*Follow PEP 8 with ruff enforcement. Real tests only.*
+*UV for everything. Ruff for style. Ty for types. Real tests only.*

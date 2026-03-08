@@ -17,12 +17,11 @@ __pycache__/
 # Node
 node_modules/
 
-# Claude (for actual projects, not templates)
+# Claude local config
 .claude/
-CLAUDE.md
+
+# Serena MCP local state
+.serena/
 
 # sample project
 sample_rules/
-
-# Development context (local only)
-.context/

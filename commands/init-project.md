@@ -30,9 +30,9 @@ I'll initialize this project following the vibe-rules-templates structure from h
 #### .context directory (if doesn't exist)
 !if [ ! -d ".context" ]; then cp -r /tmp/vibe-rules-templates/shared/.context-template ./.context && echo "✓ Created .context directory"; else echo "⚠ .context directory already exists, skipping"; fi
 
-### 4. Update .gitignore (append if doesn't contain Claude-specific files)
-!grep -q "CLAUDE.md" .gitignore 2>/dev/null || echo "\n# Claude specific files\nCLAUDE.md" >> .gitignore
-!grep -q ".rules" .gitignore 2>/dev/null || echo ".rules/" >> .gitignore
+### 4. Track Claude files in git (CLAUDE.md and .context/ should be version-controlled)
+!echo "Note: CLAUDE.md, .rules/, and .context/ are tracked in git by default."
+!echo "Add to .gitignore only if explicitly requested by the user."
 
 ### 5. Python-specific setup (if Python project detected)
 !if [ -f "requirements.txt" ] || [ -f "pyproject.toml" ] || [ -f "setup.py" ]; then \
