@@ -1,3 +1,15 @@
+> [!WARNING]
+> **This repository has been archived.** All templates have been consolidated into the
+> [research-skills](https://github.com/neuromechanist/research-skills) marketplace as the
+> **init-project** plugin.
+>
+> **To use the templates now:**
+> 1. Install the research-skills marketplace: add `neuromechanist/research-skills` to your Claude Code plugins
+> 2. Run `/init-project <project-description>` in any project directory
+>
+> The plugin bundles all Claude templates, Cursor templates, .rules/, .context/, config files,
+> and CI/CD workflows. It also auto-detects your project type and customizes templates accordingly.
+
 # AI Development Templates for Cursor & Claude
 
 Optimized templates for AI-assisted development with separate configurations for Cursor and Claude.
